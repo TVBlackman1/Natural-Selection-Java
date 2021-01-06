@@ -16,9 +16,13 @@ public abstract class SimulationObject implements IEatable {
         this.x = x;
         this.y = y;
 
+        init();
+        LogicalNamespace.getInstance().getList(type).add(this);
+    }
+
+    protected void init() {
         setType();
         setSizes();
-        LogicalNamespace.getInstance().getList(type).add(this);
     }
 
     protected abstract void setType();

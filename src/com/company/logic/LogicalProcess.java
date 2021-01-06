@@ -10,17 +10,24 @@ public class LogicalProcess implements Runnable {
     }
 
     private void logicalStep() {
-        int listCount = SimulationObjectType.values().length;
-        for(int i = 0; i < listCount; i++) {
-            ArrayList<SimulationObject> arrayList = logicalNamespace.getList(SimulationObjectType.values()[i]);
-            for (int j = 0; j < arrayList.size(); j++) {
-                System.out.println("!" + arrayList.size());
-            }
-        }
+        ArrayList<SimulationObject> arrayList;
+
+        arrayList = logicalNamespace.getList(SimulationObjectType.BACTERIA_RED);
+        arrayList.forEach(SimulationObject::update);
+
+        arrayList = logicalNamespace.getList(SimulationObjectType.BACTERIA_GREEN);
+        arrayList.forEach(SimulationObject::update);
+
     }
 
     private void logicalInit() {
-        SimulationObjectFactory.createN(SimulationObjectType.FOOD, 12);
+        SimulationObjectFactory.createN(SimulationObjectType.FOOD, 3);
+        SimulationObjectFactory.createN(SimulationObjectType.BACTERIA_RED, 2);
+        SimulationObjectFactory.createN(SimulationObjectType.BACTERIA_GREEN, 1);
+
+        FoodGenerator foodGenerator = new FoodGenerator(1, 2000);
+        Thread foodGeneratorThread = new Thread(foodGenerator);
+        foodGeneratorThread.start();
     }
 
     @Override
@@ -30,7 +37,6 @@ public class LogicalProcess implements Runnable {
         while(true) {
             logicalStep();
 
-//            System.out.println("I work!");
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

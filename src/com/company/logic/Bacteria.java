@@ -1,6 +1,12 @@
 package com.company.logic;
 
-public class Bacteria extends SimulationObject {
+import java.util.ArrayList;
+
+interface IRange {
+    double calculate(SimulationObject a, SimulationObject b);
+}
+
+public abstract class Bacteria extends SimulationObject {
     double speed = 2;
     double senseRange = 20;
 
@@ -15,23 +21,53 @@ public class Bacteria extends SimulationObject {
     }
 
     @Override
-    protected void setType() {
-
+    protected void init() {
+        super.init();
+        setTargetType();
     }
+
+    @Override
+    protected abstract void setType();
 
     @Override
     protected void setSizes() {
-        width = 10;
-        height = 10;
+        width = 20;
+        height = 20;
     }
+
+    protected abstract void setTargetType();
 
     @Override
     void update() {
-
+        SimulationObject concreteTarget = findNearestTarget();
+        if(concreteTarget != null) {
+            goTo(concreteTarget.x, concreteTarget.y);
+            tryEat();
+        }
     }
 
-    void findNearestTarget() {
+    SimulationObject findNearestTarget() {
+        IRange range = (a, b) -> Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
 
+        LogicalNamespace logicalNamespace = LogicalNamespace.getInstance();
+        ArrayList<SimulationObject> targetList = logicalNamespace.getList(targetType);
+
+        if(targetList.size() == 0)
+            return null;
+
+        SimulationObject identity = targetList.get(0);
+
+        SimulationObject nearestTarget = targetList.stream().reduce(identity, (nearest, current) -> {
+            if(range.calculate(this, current) < range.calculate(this, nearest)) {
+                return current;
+            }
+            return nearest;
+        });
+
+        if(range.calculate(this, nearestTarget) > senseRange)
+            return null;
+
+        return nearestTarget;
     }
 
     void exploreTerrain() {

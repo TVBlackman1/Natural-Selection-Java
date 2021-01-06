@@ -2,7 +2,16 @@ package com.company.logic;
 
 public class BacteriaRed extends Bacteria{
     BacteriaRed() {
-        type = SimulationObjectType.BACTERIA_GREEN;
+
+    }
+
+    @Override
+    protected void setType() {
+        type = SimulationObjectType.BACTERIA_RED;
+    }
+
+    @Override
+    protected void setTargetType() {
         targetType = SimulationObjectType.FOOD;
     }
 }

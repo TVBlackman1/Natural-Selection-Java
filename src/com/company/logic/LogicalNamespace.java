@@ -6,6 +6,8 @@ public class LogicalNamespace {
     private static LogicalNamespace instance;
 
     private final ArrayList<ArrayList<SimulationObject>> listsOfObjects;
+    private final int fieldWidth = 1200;
+    private final int fieldHeight = 1200;
 
     private LogicalNamespace() {
         listsOfObjects = new ArrayList<>();
@@ -18,6 +20,14 @@ public class LogicalNamespace {
 
     public ArrayList<SimulationObject> getList(SimulationObjectType type) {
         return listsOfObjects.get(type.ordinal());
+    }
+
+    public int getFieldWidth() {
+        return fieldWidth;
+    }
+
+    public int getFieldHeight() {
+        return fieldHeight;
     }
 
     public static LogicalNamespace getInstance() {
