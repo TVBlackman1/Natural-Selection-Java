@@ -1,4 +1,4 @@
-package com.company.logic;
+package logic;
 
 public abstract class SimulationObject implements IEatable {
     double x;

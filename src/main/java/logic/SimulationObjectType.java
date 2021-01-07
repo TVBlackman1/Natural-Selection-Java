@@ -1,4 +1,4 @@
-package com.company.logic;
+package logic;
 
 public enum SimulationObjectType {
     BACTERIA_RED,

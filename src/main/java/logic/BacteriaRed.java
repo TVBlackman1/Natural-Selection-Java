@@ -1,4 +1,4 @@
-package com.company.logic;
+package logic;
 
 public class BacteriaRed extends Bacteria{
     BacteriaRed() {
